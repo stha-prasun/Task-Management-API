@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userModel = new mongoose.Schema(
+const reporterModel = new mongoose.Schema(
   {
     fullname: {
       type: String,
@@ -17,8 +17,8 @@ const userModel = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user"],
-      default: "user",
+      enum: ["reporter"],
+      default: "reporter",
     },
     task: [
       {
@@ -30,4 +30,4 @@ const userModel = new mongoose.Schema(
   { timestamps: true },
 );
 
-export const User = mongoose.model("User", userModel);
+export const Reporter = mongoose.model("Reporter", reporterModel);
