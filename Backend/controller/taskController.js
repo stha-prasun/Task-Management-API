@@ -308,3 +308,33 @@ export const deleteTask = async (req, res) => {
     });
   }
 };
+
+export const getFilteredTasks = async (req, res) => {
+  try {
+    const { status, priority } = req.query;
+
+    const filter = {};
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (priority) {
+      filter.priority = priority;
+    }
+
+    const tasks = await Task.find(filter);
+
+    return res.status(200).json({
+      success: true,
+      tasks,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};

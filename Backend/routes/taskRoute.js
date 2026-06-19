@@ -1,5 +1,5 @@
 import express from "express";
-import { addTask, getAllTaskForReporter, getAllTaskForUser, getTaskById, updateTask } from "../controller/taskController.js";
+import { addTask, getAllTaskForReporter, getAllTaskForUser, getFilteredTasks, getTaskById, updateTask } from "../controller/taskController.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import isReporter from "../middlewares/isReporter.js";
 
@@ -16,5 +16,7 @@ router.route("/get/:id").get(isAuthenticated, getTaskById);
 router.route("/update").put(isAuthenticated, isReporter, updateTask);
 
 router.route("/delete").delete(isAuthenticated, isReporter, updateTask);
+
+router.get("/filter", isAuthenticated, getFilteredTasks);
 
 export default router;
