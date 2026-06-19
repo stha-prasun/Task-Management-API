@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import TaskCard from "../../components/TaskCard";
-import useGetAllTasks from "../../hooks/useGetAllTasks";
 import { useNavigate } from "react-router-dom";
+import useGetAllTasks from "../hooks/useGetAllTasks";
+import TaskCard from "../components/TaskCard";
 
 const Dashboard = () => {
   const user = useSelector((store) => store.User.loggedInUser);

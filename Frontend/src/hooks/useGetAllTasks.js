@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { TASK_API_ENDPOINT } from "../src/utils/constants";
-import { setTasks } from "../src/redux/tasksSlice";
+import { TASK_API_ENDPOINT } from "../utils/constants";
+import { setTasks } from "../redux/tasksSlice";
 
 const useGetAllTasks = () => {
   const dispatch = useDispatch();
