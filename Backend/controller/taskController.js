@@ -311,7 +311,7 @@ export const deleteTask = async (req, res) => {
 
 export const getFilteredTasks = async (req, res) => {
   try {
-    const { status, priority } = req.query;
+    const { status, priority, project, assignee } = req.query;
 
     const filter = {};
 
@@ -321,6 +321,14 @@ export const getFilteredTasks = async (req, res) => {
 
     if (priority) {
       filter.priority = priority;
+    }
+
+    if (project) {
+      filter.project = project;
+    }
+
+    if (assignee) {
+      filter.assignee = assignee;
     }
 
     const tasks = await Task.find(filter);
