@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const taskSchema = new mongoose.Schema(
+const taskModel = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -47,4 +47,4 @@ const taskSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Task", taskSchema);
+export const Task = mongoose.model("Task", taskModel);
