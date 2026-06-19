@@ -15,4 +15,6 @@ router.route("/get/:id").get(isAuthenticated, getTaskById);
 
 router.route("/update").put(isAuthenticated, isReporter, updateTask);
 
+router.route("/delete").delete(isAuthenticated, isReporter, updateTask);
+
 export default router;

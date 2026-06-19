@@ -248,3 +248,63 @@ export const updateTask = async (req, res) => {
     });
   }
 };
+
+export const deleteTask = async (req, res) => {
+  try {
+    const { taskId } = req.body;
+
+    if (!taskId) {
+      return res.status(400).json({
+        success: false,
+        message: "Task ID missing",
+      });
+    }
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    const user = await User.findById(task.assignee);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const reporter = await Reporter.findById(task.reporter);
+
+    if (!reporter) {
+      return res.status(404).json({
+        success: false,
+        message: "Reporter not found",
+      });
+    }
+
+    user.task.pull(task._id);
+    await user.save();
+
+    reporter.task.pull(task._id);
+    await reporter.save();
+
+    await Task.findByIdAndDelete(taskId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Task deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
