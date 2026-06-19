@@ -17,7 +17,7 @@ const Login = () => {
   });
 
   const handleChange = (e) => {
-    setInput({...input, [e.target.name]: e.target.value,});
+    setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const handleLogin = async (e) => {
@@ -52,7 +52,11 @@ const Login = () => {
 
         dispatch(setLoggedInUser(res.data.loggedInUser));
 
-        navigate("/");
+        if (res.data.loggedInUser.role == "user") {
+          navigate("/user/dashboard");
+        } else {
+          navigate("/");
+        }
       }
     } catch (error) {
       console.log(error);

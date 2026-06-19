@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -17,6 +18,10 @@ const App = () => {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/user/dashboard",
+      element: <Dashboard />,
     },
   ]);
   return (
