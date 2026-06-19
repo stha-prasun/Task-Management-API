@@ -80,3 +80,38 @@ export const addTask = async (req, res) => {
     });
   }
 };
+
+export const getAllTaskForUser = async (req, res) => {
+  try {
+    const { id } = req.body; //user id
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required",
+      });
+    }
+
+    const task = await Task.find({ assignee: id });
+
+    if (task.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "No tasks found",
+        task: [],
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      task,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
