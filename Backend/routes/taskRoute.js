@@ -1,5 +1,5 @@
 import express from "express";
-import { addTask, getAllTaskForReporter, getAllTaskForUser, getTaskById } from "../controller/taskController.js";
+import { addTask, getAllTaskForReporter, getAllTaskForUser, getTaskById, updateTask } from "../controller/taskController.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import isReporter from "../middlewares/isReporter.js";
 
@@ -12,5 +12,7 @@ router.route("/user/get/all").post(isAuthenticated, getAllTaskForUser);
 router.route("/reporter/get/all").post(isAuthenticated, isReporter, getAllTaskForReporter);
 
 router.route("/get/:id").get(isAuthenticated, getTaskById);
+
+router.route("/update").put(isAuthenticated, isReporter, updateTask);
 
 export default router;

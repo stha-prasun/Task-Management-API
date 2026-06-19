@@ -184,3 +184,67 @@ export const getTaskById = async (req, res) => {
     });
   }
 };
+
+export const updateTask = async (req, res) => {
+  try {
+    const {
+      taskId,
+      title,
+      description,
+      priority,
+      status,
+      project,
+      dueDate,
+      assigneeID,
+    } = req.body;
+
+    if (!taskId) {
+      return res.status(400).json({
+        success: false,
+        message: "Task ID is required",
+      });
+    }
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: "Task not found",
+      });
+    }
+
+    if (title !== undefined) task.title = title;
+    if (description !== undefined) task.description = description;
+    if (priority !== undefined) task.priority = priority;
+    if (status !== undefined) task.status = status;
+    if (project !== undefined) task.project = project;
+    if (dueDate !== undefined) task.dueDate = dueDate;
+    if (assigneeID !== undefined) {
+      const user = await User.findById(assigneeID);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User user not found",
+        });
+      }
+
+      task.assignee = assigneeID;
+    }
+
+    await task.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Task updated successfully",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
