@@ -55,7 +55,7 @@ const ReporterTaskCard = ({ task }) => {
           >
             View
           </button>
-          <button className="btn btn-sm btn-outline btn-warning">Edit</button>
+          <button onClick={()=>navigate(`/reporter/task/edit/${task._id}`)} className="btn btn-sm btn-outline btn-warning">Edit</button>
           <button
             onClick={handleDelete}
             className="btn btn-sm btn-outline btn-error"

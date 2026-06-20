@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useGetTask from "../hooks/useGetTask";
@@ -9,9 +9,12 @@ const TaskDetails = () => {
   const user = useSelector((store) => store.User.loggedInUser);
   const reporter = useSelector((store) => store.Reporter.loggedInReporter);
 
-  if (!user && !reporter) {
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (!user && !reporter) {
+      navigate("/login");
+    }
+  }, []);
+
   const { id } = useParams();
 
   useGetTask(id);

@@ -1,28 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { TASK_API_ENDPOINT } from "../utils/constants";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import useGetTask from "../hooks/useGetTask";
 
-const AddTask = () => {
+const EditTask = () => {
   const navigate = useNavigate();
-  const reporter = useSelector((store)=>store.Reporter.loggedInReporter);
+  const reporter = useSelector((store) => store.Reporter.loggedInReporter);
 
-  if(!reporter){
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (!reporter) {
+      navigate("/login");
+    }
+  }, []);
+
+  const { id } = useParams();
+
+  useGetTask(id);
+
+  const task = useSelector((store) => store.Task.task?.[0]);
 
   const [form, setForm] = useState({
+    taskId: "",
     title: "",
     description: "",
-    priority: "medium",
+    priority: "low",
     status: "pending",
     project: "",
     dueDate: "",
-    reporterID: reporter?._id,
     assigneeID: "",
   });
+
+  useEffect(() => {
+    if (task) {
+      setForm({
+        taskId: task._id,
+        title: task.title || "",
+        description: task.description || "",
+        priority: task.priority || "low",
+        status: task.status || "pending",
+        project: task.project || "",
+        dueDate: task.dueDate ? task.dueDate.slice(0, 10) : "",
+        assigneeID: task.assignee._id || "",
+      });
+    }
+  }, [task]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,14 +56,12 @@ const AddTask = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${TASK_API_ENDPOINT}/add`,
-        form,
-        { withCredentials: true }
-      );
+      const res = await axios.put(`${TASK_API_ENDPOINT}/update`, form, {
+        withCredentials: true,
+      });
 
       if (res.data.success) {
-        toast.success("Task created successfully!");
+        toast.success(res.data.message);
         navigate("/reporter/dashboard");
       }
     } catch (err) {
@@ -50,10 +72,12 @@ const AddTask = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Add New Task</h1>
+      <h1 className="text-2xl font-bold mb-6">Edit Task</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded shadow">
-
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 bg-white p-6 rounded shadow"
+      >
         <input
           name="title"
           placeholder="Title"
@@ -120,11 +144,11 @@ const AddTask = () => {
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         >
-          Create Task
+          Update Task
         </button>
       </form>
     </div>
   );
 };
 
-export default AddTask;
+export default EditTask;

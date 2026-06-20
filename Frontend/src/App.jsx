@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import TaskDetails from "./pages/TaskDetails";
 import ReporterDashboard from "./pages/ReporterDashboard";
 import AddTask from "./pages/AddTask";
+import EditTask from "./pages/EditTask";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -37,6 +38,10 @@ const App = () => {
     {
       path: "/reporter/task/add",
       element: <AddTask />,
+    },
+    {
+      path: "/reporter/task/edit/:id",
+      element: <EditTask />,
     },
   ]);
   return (
