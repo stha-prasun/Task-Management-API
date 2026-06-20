@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import TaskCard from "../components/TaskCard";
 import useGetAllTasksReporter from "../hooks/useGetAllTasksReporter";
+import ReporterTaskCard from "../components/ReporterTaskCard";
 
 const ReporterDashboard = () => {
   const reporter = useSelector((store) => store.Reporter.loggedInReporter);
@@ -104,7 +104,7 @@ const ReporterDashboard = () => {
       ) : (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {tasks?.map((task) => (
-            <TaskCard key={task._id} task={task} />
+            <ReporterTaskCard key={task._id} task={task} />
           ))}
         </div>
       )}
