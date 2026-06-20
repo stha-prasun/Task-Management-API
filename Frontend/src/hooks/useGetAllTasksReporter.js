@@ -27,7 +27,7 @@ const useGetAllTasksReporter = (filters = {}) => {
       console.log("Status:", error.response?.status);
       console.log("Data:", error.response?.data);
       console.log("Sent filters:", filters);
-      toast.error(error.response?.data?.message);
+      toast.error(error.response?.data?.message || "Failed to load");
     }
   }, [reporter?._id, dispatch, filters]);
 
