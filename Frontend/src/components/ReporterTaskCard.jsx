@@ -1,9 +1,6 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-const TaskCard = ({ task }) => {
-  const navigate = useNavigate();
-
+const ReporterTaskCard = ({ task }) => {
   return (
     <div className="card bg-base-100 shadow-md w-96 h-96">
       <figure>
@@ -23,11 +20,13 @@ const TaskCard = ({ task }) => {
 
         {/* Buttons */}
         <div className="card-actions justify-end mt-3">
-          <button onClick={()=>navigate(`/task/${task._id}`)} className="btn btn-sm btn-outline btn-info">View</button>
+          <button className="btn btn-sm btn-outline btn-info">View</button>
+          <button className="btn btn-sm btn-outline btn-warning">Edit</button>
+          <button className="btn btn-sm btn-outline btn-error">Delete</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default TaskCard;
+export default ReporterTaskCard;

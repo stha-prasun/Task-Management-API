@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import TaskDetails from "./pages/TaskDetails";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -22,6 +23,10 @@ const App = () => {
     {
       path: "/user/dashboard",
       element: <Dashboard />,
+    },
+    {
+      path: "/task/:id",
+      element: <TaskDetails />,
     },
   ]);
   return (
