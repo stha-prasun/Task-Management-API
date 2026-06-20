@@ -1,8 +1,10 @@
 ## Environment Variables
 
+```env
 PORT=
 MONGO_URI=
 JWT_SECRET_KEY=
+```
 
 ## Run Frontend
 
