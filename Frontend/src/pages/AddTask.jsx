@@ -44,7 +44,7 @@ const AddTask = () => {
       }
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.message || "Something went wrong");
+      toast(err.response?.data?.message || "Something went wrong");
     }
   };
 

@@ -23,7 +23,7 @@ const ReporterDashboard = () => {
     }
   }, [reporter, navigate]);
 
-  useGetAllTasksReporter(filters);
+  const refetchTasks = useGetAllTasksReporter(filters);
 
   const tasks = useSelector((state) => state.Tasks?.tasks);
 
