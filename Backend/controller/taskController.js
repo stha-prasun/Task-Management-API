@@ -83,7 +83,14 @@ export const addTask = async (req, res) => {
 
 export const getAllTaskForUser = async (req, res) => {
   try {
-    const { id } = req.body; //user id
+    const {
+      id, // reporter id
+      status,
+      priority,
+      project,
+      before,
+      after,
+    } = req.body;
 
     if (!id) {
       return res.status(400).json({
@@ -92,9 +99,37 @@ export const getAllTaskForUser = async (req, res) => {
       });
     }
 
-    const task = await Task.find({ assignee: id });
+    const query = {
+      assignee: id,
+    };
 
-    if (task.length === 0) {
+    if (status) {
+      query.status = status;
+    }
+
+    if (priority) {
+      query.priority = priority;
+    }
+
+    if (project) {
+      query.project = project;
+    }
+
+    if (before || after) {
+      query.dueDate = {};
+
+      if (before) {
+        query.dueDate.$lte = new Date(before);
+      }
+
+      if (after) {
+        query.dueDate.$gte = new Date(after);
+      }
+    }
+
+    const tasks = await Task.find(query);
+
+    if (tasks.length === 0) {
       return res.status(200).json({
         success: false,
         message: "No tasks found",
@@ -104,7 +139,7 @@ export const getAllTaskForUser = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      task,
+      task: tasks,
     });
   } catch (error) {
     console.log(error);

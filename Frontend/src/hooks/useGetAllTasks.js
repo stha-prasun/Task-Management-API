@@ -4,9 +4,8 @@ import axios from "axios";
 import { TASK_API_ENDPOINT } from "../utils/constants";
 import { setTasks } from "../redux/tasksSlice";
 
-const useGetAllTasks = () => {
+const useGetAllTasks = (filters = {}) => {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state.User.loggedInUser);
 
   useEffect(() => {
@@ -16,15 +15,14 @@ const useGetAllTasks = () => {
           `${TASK_API_ENDPOINT}/user/get/all`,
           {
             id: user?._id,
+            ...filters,
           },
           {
             withCredentials: true,
-          },
+          }
         );
 
-        if (res.data?.success) {
-          dispatch(setTasks(res.data.task));
-        }
+        dispatch(setTasks(res.data.task || []));
       } catch (error) {
         console.log("Failed to fetch tasks:", error);
       }
@@ -33,7 +31,7 @@ const useGetAllTasks = () => {
     if (user?._id) {
       fetchTasks();
     }
-  }, [user?._id, dispatch]);
+  }, [user?._id, dispatch, JSON.stringify(filters)]);
 };
 
 export default useGetAllTasks;
