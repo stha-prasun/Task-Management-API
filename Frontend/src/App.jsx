@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import TaskDetails from "./pages/TaskDetails";
+import ReporterDashboard from "./pages/ReporterDashboard";
 
 const App = () => {
   const appRouter = createBrowserRouter([
@@ -27,6 +28,10 @@ const App = () => {
     {
       path: "/task/:id",
       element: <TaskDetails />,
+    },
+    {
+      path: "/reporter/dashboard",
+      element: <ReporterDashboard />,
     },
   ]);
   return (

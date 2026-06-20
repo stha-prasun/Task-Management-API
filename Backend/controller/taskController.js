@@ -1,6 +1,7 @@
 import { User } from "../models/userSchema.js";
 import { Task } from "../models/taskSchema.js";
 import { Reporter } from "../models/reporterSchema.js";
+import mongoose from "mongoose";
 
 export const addTask = async (req, res) => {
   try {
@@ -84,7 +85,7 @@ export const addTask = async (req, res) => {
 export const getAllTaskForUser = async (req, res) => {
   try {
     const {
-      id, // reporter id
+      id, // user id
       status,
       priority,
       project,
@@ -153,7 +154,15 @@ export const getAllTaskForUser = async (req, res) => {
 
 export const getAllTaskForReporter = async (req, res) => {
   try {
-    const { id } = req.body; //reporter id
+    const {
+      id, // reporter id
+      status,
+      priority,
+      assignee, //assignee id
+      project,
+      before,
+      after,
+    } = req.body;
 
     if (!id) {
       return res.status(400).json({
@@ -162,9 +171,48 @@ export const getAllTaskForReporter = async (req, res) => {
       });
     }
 
-    const task = await Task.find({ reporter: id });
+    const query = {
+      reporter: id,
+    };
 
-    if (task.length === 0) {
+    if (status) {
+      query.status = status;
+    }
+
+    if (priority) {
+      query.priority = priority;
+    }
+
+    if (assignee) {
+  if (!mongoose.Types.ObjectId.isValid(assignee)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid assignee ID",
+    });
+  }
+
+  query.assignee = assignee;
+}
+
+    if (project) {
+      query.project = project;
+    }
+
+    if (before || after) {
+      query.dueDate = {};
+
+      if (before) {
+        query.dueDate.$lte = new Date(before);
+      }
+
+      if (after) {
+        query.dueDate.$gte = new Date(after);
+      }
+    }
+
+    const tasks = await Task.find(query).populate("assignee", "fullname email").populate("reporter", "fullname email");
+
+    if (tasks.length === 0) {
       return res.status(200).json({
         success: false,
         message: "No tasks found",
@@ -174,7 +222,7 @@ export const getAllTaskForReporter = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      task,
+      task: tasks,
     });
   } catch (error) {
     console.log(error);
@@ -197,7 +245,8 @@ export const getTaskById = async (req, res) => {
       });
     }
 
-    const task = await Task.find({ _id: id });
+    const task = await Task.find({ _id: id }).populate("assignee", "fullname email")
+    .populate("reporter", "fullname email");
 
     if (task.length === 0) {
       return res.status(200).json({

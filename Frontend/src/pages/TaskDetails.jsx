@@ -7,15 +7,17 @@ const TaskDetails = () => {
   const navigate = useNavigate();
 
   const user = useSelector((store) => store.User.loggedInUser);
+  const reporter = useSelector((store) => store.Reporter.loggedInReporter);
 
-  if (!user) {
+  if (!user && !reporter) {
     navigate("/login");
   }
   const { id } = useParams();
 
   useGetTask(id);
 
-  const task = useSelector((store) => store.Task.task[0]);
+  const tasks = useSelector((store) => store.Task.task);
+  const task = tasks?.[0];
 
   console.log(task);
 
@@ -53,6 +55,15 @@ const TaskDetails = () => {
               <span className="font-semibold">Project:</span>{" "}
               <span>{task.project || "N/A"}</span>
             </div>
+
+            <p>
+              <span className="font-semibold">Assigned To: </span>{" "}
+              {task.assignee?.fullname}
+            </p>
+            <p>
+              <span className="font-semibold">Reporter: </span>{" "}
+              {task.reporter?.fullname}
+            </p>
 
             <div>
               <span className="font-semibold">Due Date:</span>{" "}

@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { REPORTER_API_ENDPOINT, USER_API_ENDPOINT } from "../utils/constants";
 import { setLoggedInUser } from "../redux/userSlice";
+import { setLoggedInReporter } from "../redux/reporterSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -50,12 +51,12 @@ const Login = () => {
 
         toast.success(res.data.message);
 
-        dispatch(setLoggedInUser(res.data.loggedInUser));
-
         if (res.data.loggedInUser.role == "user") {
+          dispatch(setLoggedInUser(res.data.loggedInUser));
           navigate("/user/dashboard");
         } else {
-          navigate("/");
+          dispatch(setLoggedInReporter(res.data.loggedInUser));
+          navigate("/reporter/dashboard");
         }
       }
     } catch (error) {
