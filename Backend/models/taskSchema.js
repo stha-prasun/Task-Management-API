@@ -35,7 +35,7 @@ const taskModel = new mongoose.Schema(
 
     reporter: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Reporter",
       required: true,
     },
 
